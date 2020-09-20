@@ -1,22 +1,68 @@
-import React from "react"
-import { Link } from "gatsby"
+import React, {useEffect, useState} from "react";
+import styled from "styled-components";
+import Layout from "../components/layout";
+import SEO from "../components/seo";
 
-import Layout from "../components/layout"
-import Image from "../components/image"
-import SEO from "../components/seo"
+const Section = styled.section`
+  width: 100%;
+  background-color: ${ props => props.bgColor || 'white'};
+  display: flex;
+  align-items: center;
+`;
+
+const Banner = styled(Section)`
+  height: calc(100vh * .95);
+`;
+
+const IntroContainer = styled.div`
+  padding-left: 2rem;
+
+`;
+
+const Accent = styled.span`
+  color: red;
+`;
+
+const DescriptionHeader = styled.h1`
+  font-size: 4rem;
+  max-width: 75%;
+`;
+
+const descriptions = [
+  'build what\'s in your mind\'s eye.',
+  'build cool experiences across the web.',
+  'learn and share new ideas.',
+];
+
+
+const Introduction = () => {
+  const [currentDescription, setDescription] = useState(0);
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setDescription((currentDescription + 1) % descriptions.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, [currentDescription, setDescription]);
+  return (
+    <IntroContainer>
+      <h2>Hi, I'm <Accent>Erik Carlson</Accent>.</h2>
+      <DescriptionHeader>I strive to {descriptions[currentDescription]}</DescriptionHeader>
+      <h2><Accent>Full Stack</Accent> Software Engineer</h2>
+    </IntroContainer>
+  )
+}
 
 const IndexPage = () => (
   <Layout>
     <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link> <br />
-    <Link to="/using-typescript/">Go to "Using TypeScript"</Link>
+    <Banner>
+      <Introduction />
+    </Banner>
+    <Section bgColor='#f0f0f0'>about me section</Section>
+    <Section>projects section</Section>
+    <Section bgColor='#f0f0f0'>work history section</Section>
+    <Section>technology used section</Section>
   </Layout>
-)
+);
 
 export default IndexPage
